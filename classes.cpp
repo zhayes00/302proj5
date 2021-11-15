@@ -3,63 +3,85 @@
 using namespace std;
 
 //Edge Stuff~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Edge::Edge(class Node *to, class Node *from, bool reverse_edge = false) {
+Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
 
-	//construct
-	
+	//Setting parameters to data members
+	Edge::to = to;
+	Edge::from = from;
+		
 
 }
 
-Edge::~Edge{}
+
+
 
 //Node Stuff~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Node::Node(int id, Node_Type type, string word = "") {
+Node::Node(int id, Node_Type type, string word) {
 
-	//construct
-
+	/* need to:
+	- DONE: Set "id" and "type" data members with value of parameters
+	- DONE: letters.resize(26, 0);
+	- DONE: Process "word" parameter into "letters" vector
+	- DONE: Set Node::visited to 0
+	- Do we figure out the adjacency list here, or somewhere else?
+	
+	*/
+	
+	//Set "id" and "type" data members with value of parameters
+	Node::id = id;
+	Node::type = type;
+	
+	Node::visited = 0;
+	
+	//Process "word" parameter into "letters" vector
+	Node::letters.resize(26,0);
+	for (string::size_type i=0; i < word.size(); ++i) {
+		Node::letters.at( word.at(i) - 65 ) = 1;
+	}
 }
 
-Node::~Node{}
+
+
 
 //Graph Stuff~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Graph::Graph{
+Graph::Graph(){
 
 	//Construct
 	
 }
 
-Graph::~Graph{
+Graph::~Graph(){
 
 	//Destruct
 	
 }
 
-void Graph::add_dice {
+void Graph::add_dice(string die, int id) {
+	
+	
+}
+
+void Graph::add_word(string word, int id){
 
 
 }
 
-void Graph::add_word {
+bool Graph::BFS() {
 
 
 }
 
-bool Graph::BFS {
+bool Graph::spell_word() {
 
 
 }
 
-bool Graph:spell_word {
+void Graph::delete_word() {
 
 
 }
 
-void Graph::delete_word {
-
-
-}
-
-void Graph::print_node_order {
+void Graph::print_node_order(string word) {
 
 
 }

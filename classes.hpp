@@ -1,6 +1,13 @@
 //Classes for the p5
 //referenced from the Lab presentation Ashley gave
 
+#include <string>
+#include <vector>
+
+typedef enum {SOURCE, SINK, WORD, DICE} Node_Type;
+
+using namespace std;
+
 #ifndef CLASSES_HPP
 #define CLASSES_HPP
 
@@ -53,6 +60,6 @@ class Graph {
 		void delete_word(); //deletes the word nodes but leaves dice nodes
 		void print_node_order(string word); //print the spelling IDs and word
 
-}
+};
 
 #endif
