@@ -29,6 +29,14 @@ int main(int argc, char **argv) {
 		Graph myGraph;
 		for (vector<string>::size_type i=0; i < inDice.size(); ++i)
 			myGraph.add_dice(inDice.at(i));
+		
+	//Adding and checking each word
+		for (vector<string>::size_type i=0; i < inWords.size(); ++i) {
+			myGraph.add_word(inWords.at(i));
+			//TODO: call evaluation functions
+			printf("debug: %lu\n", i);
+			myGraph.delete_word();
+		}
 
 	//add classes from piazza?
 	//use edmonds-karp

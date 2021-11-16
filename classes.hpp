@@ -17,7 +17,7 @@ class Edge {
 		class Node *to;
 		class Node *from;
 
-		Edge(class Node *to, class Node *from, bool reverse_edge = false); //constructor for edges
+		Edge(class Node *to1, class Node *from1, bool reverse_edge = false); //constructor for edges
 
 		Edge *reverse; //edge going other way
 		int original; //original weight per edge

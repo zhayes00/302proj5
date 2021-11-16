@@ -3,11 +3,11 @@
 using namespace std;
 
 //Edge Stuff~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Edge::Edge(class Node *to, class Node *from, bool reverse_edge) {
+Edge::Edge(class Node *to1, class Node *from1, bool reverse_edge) {
 
 	//Setting parameters to data members
-	Edge::to = to;
-	Edge::from = from;
+	this->to = to1;
+	this->from = from1;
 		
 	//If this is not the reverse edge, we need to create it and set its "to" and "from"
 	//nodes to the opposite if this instance. Also, we set both edges' "reverse" pointers
