@@ -18,7 +18,6 @@ class Edge {
 		class Node *from;
 
 		Edge(class Node *to, class Node *from, bool reverse_edge = false); //constructor for edges
-		~Edge(){}; //default destruct
 
 		Edge *reverse; //edge going other way
 		int original; //original weight per edge
@@ -29,15 +28,13 @@ class Edge {
 class Node {
 	public:
 
-		Node(int id, Node_Type type, string word = ""); //constructor for nodes
-		~Node(){}; //default destruct
+		Node(Node_Type type, string word = ""); //constructor for nodes
 
-		int id;
 		Node_Type type; //type of node it is (sourse, sink, word, or dice)
 		vector<bool> letters; //length 26 w/ letters contained in word set to 1
 		int visited; //for BFS
 		vector<Edge*> adj; //adjacency list
-		Edge *backedge; //previous edge for Edmonds-Karp
+		Edge *backedge = nullptr; //previous edge for Edmonds-Karp
 	
 };
 
@@ -46,15 +43,15 @@ class Graph {
 
 		Graph(); //constructor initailizes graph with source node
 		~Graph(); //destructor to deallocate memory of graph
-
-		Node *source; //source node
+		
+		Node *sink; //Permanently keeps track of the SINK node
 		vector<Node*> nodes; //holds the nodes
 		vector<int> spellingIds; //order of flow to spell word
-		int min_nodes; //min number of dice nodes
+		int min_nodes; //Number of source + dice nodes
 
 		//member functions
-		void add_dice(string die, int id); //add dice nodes to graph
-		void add_word(string word, int id); //add word (letter) nodes to graph
+		void add_dice(string die); //add dice nodes to graph
+		void add_word(string word); //add word (letter) nodes to graph
 		bool BFS(); //bfs for Edmonds-Karp
 		bool spell_word(); //runs Edmonds-Karp to see if we can spell the word
 		void delete_word(); //deletes the word nodes but leaves dice nodes

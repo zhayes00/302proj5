@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 #include "classes.hpp"
-#pragma once
+// #pragma once
 
 using namespace std;
 
@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 	//Creating graph and populating it with dice
 		Graph myGraph;
 		for (vector<string>::size_type i=0; i < inDice.size(); ++i)
-			myGraph.add_dice(inDice.at(i), myGraph.nodes.size());
+			myGraph.add_dice(inDice.at(i));
 
 	//add classes from piazza?
 	//use edmonds-karp
