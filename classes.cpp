@@ -165,6 +165,8 @@ bool Graph::BFS() {
 	//		as well as the reverse edges' as well
 	//return true if all is well
 	
+	cout << "BFS pling\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+	
 	//Setting up Queue for BFS usage, starting with the source node
 	queue<Node*> bfsq; //'bfs' 'q'ueue
 	bfsq.push(this->nodes.at(0)); //push in the source node
@@ -182,6 +184,8 @@ bool Graph::BFS() {
 
 		}
 
+		cout << "BFS pling clear\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
 		//Read in adjacencies into the queue
 		for (vector<Edge*>::size_type i = 0; i < bfsq.front()->adj.size(); ++i) {
 
@@ -189,7 +193,7 @@ bool Graph::BFS() {
 			if (bfsq.front()->adj.at(i)->to->type == SINK) {
 
 				//Set SINK's backedge for Edmonds Karp Usage later
-				this->sink->backedge = new Edge( bfsq.front(), this->sink );
+				this->sink->backedge = bfsq.front()->adj.at(i)->reverse;
 
 				//Empty the Queue as to break the While Loop since SINK has been found
 				for (queue<Node*>::size_type j = 0; j < bfsq.size(); ++j) {
@@ -199,6 +203,9 @@ bool Graph::BFS() {
 				found_sink = true;
 
 			}
+
+			cout << "BFS pling adj\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
 
 			//Do not push into queue if Node has been visited or its Edge's Original Flow = 0
 			if ((bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1) ) {
@@ -210,6 +217,9 @@ bool Graph::BFS() {
 
 			}
 
+			cout << "BFS pling push\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
+
 		}
 
 		//Set the current node's visited to 1 & remove it from the bfsq
@@ -219,6 +229,9 @@ bool Graph::BFS() {
 		}
 
 	}
+
+	cout << "BFS pling setter\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
 
 	//BFS Path Checking
 	if (found_sink == false) {
@@ -231,6 +244,9 @@ bool Graph::BFS() {
 		//	including Rev-Edges
 		
 		Node* temp = this->sink;
+
+		cout << "BFS pling this sink\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
 
 		//Loop to trace back edges from SINK to SOURCE
 		while (temp->type != SOURCE) {
@@ -248,9 +264,13 @@ bool Graph::BFS() {
 
 		}
 
+		cout << "BFS pling pathing\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
+
 		return true;
 
 	}
+
 
 }
 
@@ -265,6 +285,8 @@ bool Graph::spell_word() {
 	//			store this "used" DICE node's "ID" into spellingIds for output
 	//	
 	//	if all is well, return true
+	
+	cout << "EK pling\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 	//Run BFS until it cannot find anymore paths
 	while(BFS());
