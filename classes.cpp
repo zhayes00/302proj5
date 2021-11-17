@@ -165,7 +165,6 @@ bool Graph::BFS() {
 	//		as well as the reverse edges' as well
 	//return true if all is well
 	
-	cout << "BFS pling\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 	
 	//Setting up Queue for BFS usage, starting with the source node
 	queue<Node*> bfsq; //'bfs' 'q'ueue
@@ -173,7 +172,6 @@ bool Graph::BFS() {
 
 	bool found_sink = false;
 
-	cout << "BFS pling clear\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 	//Clear Backedges & Visited on all Nodes
 	for (vector<Node*>::size_type i = 0; i < this->nodes.size(); ++i) {
@@ -193,9 +191,6 @@ bool Graph::BFS() {
 			//Break the Loops if the SINK is found
 			if (bfsq.front()->adj.at(i)->to->type == SINK) {
 
-				cout << "BFS pling if Sink found\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
-
-
 				//Set SINK's backedge for Edmonds Karp Usage later
 				this->sink->backedge = bfsq.front()->adj.at(i)->reverse;
 
@@ -207,13 +202,13 @@ bool Graph::BFS() {
 
 			}
 
-			cout << "BFS pling adj\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
-
 
 			//Do not push into queue if Node has been visited or its Edge's Original Flow = 0
-			if ((bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1)) {
+			if (bfsq.empty()) {
+				break;
+			}
 
-				cout << "BFS pling inner push\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+			if ( (bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1) ) {
 
 
 				//Push the adjacent node into the queue
@@ -222,10 +217,6 @@ bool Graph::BFS() {
 				bfsq.back()->backedge = bfsq.front()->adj.at(i)->reverse;
 
 			}
-
-			cout << "BFS pling push\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
-
-
 		}
 
 		//Set the current node's visited to 1 & remove it from the bfsq
@@ -235,8 +226,6 @@ bool Graph::BFS() {
 		}
 
 	}
-
-	cout << "BFS pling setter\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 
 	//BFS Path Checking
@@ -251,13 +240,9 @@ bool Graph::BFS() {
 		
 		Node* temp = this->sink;
 
-		cout << "BFS pling this sink\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
-
 
 		//Loop to trace back edges from SINK to SOURCE
 		while (temp->type != SOURCE) {
-
-			cout << "BFS pling traceback\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 			//Set the (Normal & Reverse) edge's O & R
 			//Set "Reverse"/Backedge's
@@ -267,15 +252,11 @@ bool Graph::BFS() {
 			temp->backedge->reverse->original = 0;
 			temp->backedge->reverse->residual = 1;
 
-			cout << "BFS pling post OR\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
-
 
 			//Trace back the backedge
 			temp = temp->backedge->to;
 
 		}
-
-		cout << "BFS pling pathing\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 
 		return true;
@@ -297,13 +278,9 @@ bool Graph::spell_word() {
 	//	
 	//	if all is well, return true
 	
-	cout << "EK pling\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 	//Run BFS until it cannot find anymore paths
-	//while(BFS());
-	while (BFS() ) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTEER
-		cout << "BFS RAN\n";
-	}
+	while(BFS());
 
 	//Check Sink's backedges' reverses' Residuals
 	bool checker = true;
