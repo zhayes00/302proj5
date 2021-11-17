@@ -252,6 +252,8 @@ bool Graph::BFS() {
 			temp->backedge->reverse->original = 0;
 			temp->backedge->reverse->residual = 1;
 
+			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+			cout << "Edge from " << temp->type << " to " << temp->backedge->to->type << " with O = " << temp->backedge->original  << endl;
 
 			//Trace back the backedge
 			temp = temp->backedge->to;
@@ -286,8 +288,8 @@ bool Graph::spell_word() {
 	bool checker = true;
 	for (vector<Edge*>::size_type i = 0; i < this->sink->adj.size(); ++i) {
 
-		//if the residual is 0, then is was never "traveled" and therefore, the word was not spelled
-		if ( this->sink->adj.at(i)->reverse->residual == 0 ) {
+		//if the original is 1, then is was never "traveled" and therefore, the word was not spelled
+		if ( this->sink->adj.at(i)->reverse->original == 1 ) {
 			checker = false;
 		}
 
