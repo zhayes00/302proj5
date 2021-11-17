@@ -82,6 +82,7 @@ Graph::~Graph(){
 	
 	//for each node again (to delete it this time)
 	for (vector<Node*>::size_type i=0; i < this->nodes.size(); ++i) {
+		delete this->nodes.at(i)->backedge;
 		delete this->nodes.at(i);
 	}
 	
@@ -90,7 +91,8 @@ Graph::~Graph(){
 		delete this->sink->adj.at(i);
 	}
 	this->sink->adj.clear();
-
+	delete this->sink->backedge;
+	delete this->sink;
 	
 }
 
@@ -153,6 +155,7 @@ bool Graph::spell_word() {
 	return 0;
 }
 
+/*BROKEN do not use.
 void Graph::delete_word() {
 //deletes word nodes and all edges between them and dice nodes, and sink node
 //delete edges first, then nodes, then resize vector to min_nodes
@@ -192,4 +195,4 @@ void Graph::delete_word() {
 void Graph::print_node_order(string word) {
 
 
-}
+} */

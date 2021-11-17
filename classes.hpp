@@ -54,7 +54,7 @@ class Graph {
 		void add_word(string word); //add word (letter) nodes to graph
 		bool BFS(); //bfs for Edmonds-Karp
 		bool spell_word(); //runs Edmonds-Karp to see if we can spell the word
-		void delete_word(); //deletes the word nodes but leaves dice nodes
+		//DOES NOT WORK: void delete_word(); //deletes the word nodes but leaves dice nodes
 		void print_node_order(string word); //print the spelling IDs and word
 
 };
