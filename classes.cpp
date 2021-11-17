@@ -1,4 +1,6 @@
 #include "classes.hpp"
+#include <queue>
+#include <iostream>
 
 using namespace std;
 
@@ -147,12 +149,162 @@ void Graph::add_word(string word){
 
 bool Graph::BFS() {
 
-	return 0;
+	//set up queue w/ source node inside
+	//
+	//while loop until queue is empty
+	//clear backedges & visited aspects
+	//read in connections (& set their backedges) and store them into queue
+	//	do not read in any that are visited or who's edge's Original = 0
+	//set visited to current & remove it from the queue
+	//go to next in queue
+	//break when current finds Sink
+	//	if no path is found and while loop breaks naturally, then return false
+	//
+	//follow backedges for path from sink to source
+	//	set the Original & Residuals while following
+	//		as well as the reverse edges' as well
+	//return true if all is well
+	
+	//Setting up Queue for BFS usage, starting with the source node
+	queue<Node*> bfsq; //'bfs' 'q'ueue
+	bfsq.push(this->nodes.at(0)); //push in the source node
+
+	bool found_sink = false;
+
+	//Main Action Loop
+	while (!bfsq.empty()) {
+
+		//Clear Backedges & Visited on all Nodes
+		for (vector<Node*>::size_type i = 0; i < this->nodes.size(); ++i) {
+
+			this->nodes.at(i)->visited = 0;
+			this->nodes.at(i)->backedge = nullptr;
+
+		}
+
+		//Read in adjacencies into the queue
+		for (vector<Edge*>::size_type i = 0; i < bfsq.front()->adj.size(); ++i) {
+
+			//Break the Loops if the SINK is found
+			if (bfsq.front()->adj.at(i)->to->type == SINK) {
+
+				//Set SINK's backedge for Edmonds Karp Usage later
+				this->sink->backedge = new Edge( bfsq.front(), this->sink );
+
+				//Empty the Queue as to break the While Loop since SINK has been found
+				for (queue<Node*>::size_type j = 0; j < bfsq.size(); ++j) {
+					bfsq.pop();
+				}
+
+				found_sink = true;
+
+			}
+
+			//Do not push into queue if Node has been visited or its Edge's Original Flow = 0
+			if ((bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1) ) {
+
+				//Push the adjacent node into the queue
+				bfsq.push( bfsq.front()->adj.at(i)->to );
+				//set the adjacent node's backedge
+				bfsq.back()->backedge = bfsq.front()->adj.at(i)->reverse;
+
+			}
+
+		}
+
+		//Set the current node's visited to 1 & remove it from the bfsq
+		if (!bfsq.empty()) {
+			bfsq.front()->visited = 1;
+			bfsq.pop();
+		}
+
+	}
+
+	//BFS Path Checking
+	if (found_sink == false) {
+		return false;
+	}
+	else {
+
+		//Follow Backedges from SINK to SOURCE
+		//Change Original & Residual along the way
+		//	including Rev-Edges
+		
+		Node* temp = this->sink;
+
+		//Loop to trace back edges from SINK to SOURCE
+		while (temp->type != SOURCE) {
+
+			//Set the (Normal & Reverse) edge's O & R
+			//Set "Reverse"/Backedge's
+			temp->backedge->original = 1;
+			temp->backedge->residual = 0;
+			//Set Standard Edge's
+			temp->backedge->reverse->original = 0;
+			temp->backedge->reverse->residual = 1;
+
+			//Trace back the backedge
+			temp = temp->backedge->to;
+
+		}
+
+		return true;
+
+	}
+
 }
 
 bool Graph::spell_word() {
 
-	return 0;
+	//Call BFS until it returns false
+	//	put in while
+	//
+	//Check WORD nodes' edges, if Residual = 1 for all edges from WORD -> SINK, then word is spelled
+	//	While checking there...
+	//		look @ WORD node & use the edge that has an Original = 1 (it's reverse edge to the DICE node)
+	//			store this "used" DICE node's "ID" into spellingIds for output
+	//	
+	//	if all is well, return true
+
+	//Run BFS until it cannot find anymore paths
+	while(BFS());
+
+	//Check Sink's backedges' reverses' Residuals
+	bool checker = true;
+	for (vector<Edge*>::size_type i = 0; i < this->sink->adj.size(); ++i) {
+
+		//if the residual is 0, then is was never "traveled" and therefore, the word was not spelled
+		if ( this->sink->adj.at(i)->reverse->residual == 0 ) {
+			checker = false;
+		}
+
+		//Checking to see what die were used for each letter
+		for (vector<Edge*>::size_type j = 0; j < this->sink->adj.at(i)->to->adj.size(); ++j) {
+
+			//If the WORD node has an edge with O = 1, then it should track back to the DICE node used
+			if ( this->sink->adj.at(i)->to->adj.at(j)->original == 1 ) {
+
+				//Acquire the relative DICE id for the output
+				for (vector<Node*>::size_type k = 0; k < this->nodes.size(); ++k) {
+
+					if ( (this->nodes.at(k)->type == DICE) && (this->nodes.at(k) == this->sink->adj.at(i)->to->adj.at(j)->to) ) {
+
+						spellingIds.push_back( k - 1 );
+
+					}
+
+				}
+
+			}
+
+		}
+
+	}
+
+
+	return checker;
+	
+
 }
 
 /*BROKEN do not use.
