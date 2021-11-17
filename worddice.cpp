@@ -34,7 +34,10 @@ int main(int argc, char **argv) {
 			
 			//Running sort algorithms and printing result of spell check
 				if (myGraph->spell_word()) {
-					//TODO: print the dice order
+					for (vector<int>::size_type j=0; j < myGraph->spellingIds.size(); ++j) {
+						printf("%i", myGraph->spellingIds.at(j));
+						if (j < myGraph->spellingIds.size()-1) printf(",");
+					}
 					printf(": %s\n", inWords.at(i).c_str());
 				}
 				else printf("Cannot spell %s\n", inWords.at(i).c_str());
