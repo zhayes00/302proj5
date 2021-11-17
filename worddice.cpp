@@ -31,12 +31,29 @@ int main(int argc, char **argv) {
 			myGraph.add_dice(inDice.at(i));
 		
 	//Adding and checking each word
-		for (vector<string>::size_type i=0; i < inWords.size(); ++i) {
-			myGraph.add_word(inWords.at(i));
-			//TODO: call evaluation functions
-			printf("debug: %lu\n", i);
-			myGraph.delete_word();
+		// for (vector<string>::size_type i=0; i < inWords.size(); ++i) {
+			// myGraph.add_word(inWords.at(i));
+			// TODO: call evaluation functions
+			// printf("debug: %lu\n", i);
+			// myGraph.delete_word();
+		// }
+		
+	//TODO: debug
+		myGraph.add_word(inWords.at(0));
+		for (vector<Node*>::size_type i=0; i < myGraph.nodes.size(); ++i){
+			printf("Node %p has edge(s) pointing to ", myGraph.nodes.at(i));
+			
+			for(vector<Edge*>::size_type j=0; j < myGraph.nodes.at(i)->adj.size(); ++j) {
+				printf("(%p | %p) ", myGraph.nodes.at(i)->adj.at(j)->from, myGraph.nodes.at(i)->adj.at(j)->to);
+			}
+			printf("\n");
 		}
+		printf("Node SINK has edge(s) pointing to ");
+			
+		for(vector<Edge*>::size_type j=0; j < myGraph.sink->adj.size(); ++j) {
+			printf("(%p | %p) ", myGraph.sink->adj.at(j)->from, myGraph.sink->adj.at(j)->to);
+		}
+		printf("\n");
 
 	//add classes from piazza?
 	//use edmonds-karp
