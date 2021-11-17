@@ -173,18 +173,19 @@ bool Graph::BFS() {
 
 	bool found_sink = false;
 
+	cout << "BFS pling clear\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
+	//Clear Backedges & Visited on all Nodes
+	for (vector<Node*>::size_type i = 0; i < this->nodes.size(); ++i) {
+
+		this->nodes.at(i)->visited = 0;
+		this->nodes.at(i)->backedge = nullptr;
+
+	}
+
+
 	//Main Action Loop
 	while (!bfsq.empty()) {
-
-		//Clear Backedges & Visited on all Nodes
-		for (vector<Node*>::size_type i = 0; i < this->nodes.size(); ++i) {
-
-			this->nodes.at(i)->visited = 0;
-			this->nodes.at(i)->backedge = nullptr;
-
-		}
-
-		cout << "BFS pling clear\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 		//Read in adjacencies into the queue
 		for (vector<Edge*>::size_type i = 0; i < bfsq.front()->adj.size(); ++i) {
@@ -192,13 +193,15 @@ bool Graph::BFS() {
 			//Break the Loops if the SINK is found
 			if (bfsq.front()->adj.at(i)->to->type == SINK) {
 
+				cout << "BFS pling if Sink found\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
+
 				//Set SINK's backedge for Edmonds Karp Usage later
 				this->sink->backedge = bfsq.front()->adj.at(i)->reverse;
 
 				//Empty the Queue as to break the While Loop since SINK has been found
-				for (queue<Node*>::size_type j = 0; j < bfsq.size(); ++j) {
-					bfsq.pop();
-				}
+				queue<Node*> clearer;
+				swap(bfsq, clearer);
 
 				found_sink = true;
 
@@ -208,7 +211,10 @@ bool Graph::BFS() {
 
 
 			//Do not push into queue if Node has been visited or its Edge's Original Flow = 0
-			if ((bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1) ) {
+			if ((bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1)) {
+
+				cout << "BFS pling inner push\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
 
 				//Push the adjacent node into the queue
 				bfsq.push( bfsq.front()->adj.at(i)->to );
@@ -251,6 +257,8 @@ bool Graph::BFS() {
 		//Loop to trace back edges from SINK to SOURCE
 		while (temp->type != SOURCE) {
 
+			cout << "BFS pling traceback\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
 			//Set the (Normal & Reverse) edge's O & R
 			//Set "Reverse"/Backedge's
 			temp->backedge->original = 1;
@@ -258,6 +266,9 @@ bool Graph::BFS() {
 			//Set Standard Edge's
 			temp->backedge->reverse->original = 0;
 			temp->backedge->reverse->residual = 1;
+
+			cout << "BFS pling post OR\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
+
 
 			//Trace back the backedge
 			temp = temp->backedge->to;
@@ -289,7 +300,10 @@ bool Graph::spell_word() {
 	cout << "EK pling\n"; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 
 	//Run BFS until it cannot find anymore paths
-	while(BFS());
+	//while(BFS());
+	while (BFS() ) { //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTEER
+		cout << "BFS RAN\n";
+	}
 
 	//Check Sink's backedges' reverses' Residuals
 	bool checker = true;
