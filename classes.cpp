@@ -84,7 +84,7 @@ Graph::~Graph(){
 	
 	//for each node again (to delete it this time)
 	for (vector<Node*>::size_type i=0; i < this->nodes.size(); ++i) {
-		delete this->nodes.at(i)->backedge;
+		// delete this->nodes.at(i)->backedge;
 		delete this->nodes.at(i);
 	}
 	
@@ -193,39 +193,20 @@ bool Graph::BFS() {
 		//Read in adjacencies into the queue
 		for (vector<Edge*>::size_type i = 0; i < bfsq.front()->adj.size(); ++i) {
 
-			/*
-			//Break the Loops if the SINK is found
-			if (bfsq.front()->adj.at(i)->to->type == SINK) {
-
-				//Set SINK's backedge for Edmonds Karp Usage later
-				this->sink->backedge = bfsq.front()->adj.at(i)->reverse;
-
-				//Empty the Queue as to break the While Loop since SINK has been found
-				queue<Node*> clearer;
-				swap(bfsq, clearer);
-
-				found_sink = true;
-			} 
-			*/
-
-
-			//Do not push into queue if Node has been visited or its Edge's Original Flow = 0
-			if (bfsq.empty()) {
-				break;
-			}
-
 			if ( (bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1) ) {
 
 				//Push the adjacent node into the queue
 				bfsq.push( bfsq.front()->adj.at(i)->to );
 				//set the adjacent node's backedge
 				bfsq.back()->backedge = bfsq.front()->adj.at(i)->reverse;
+				
+				bfsq.front()->adj.at(i)->to->visited = 1;
 			}
 		}
 
 		//Set the current node's visited to 1 & remove it from the bfsq
 		if (!bfsq.empty()) {
-			bfsq.front()->visited = 1;
+			// bfsq.front()->visited = 1;
 			bfsq.pop();
 		}
 	}
@@ -294,12 +275,10 @@ bool Graph::spell_word() {
 	while(BFS());
 
 	//Check Sink's backedges' reverses' Residuals
-	bool checker = true;
 	for (vector<Edge*>::size_type i = 0; i < this->sink->adj.size(); ++i) {
 
 		//if the original is 1, then is was never "traveled" and therefore, the word was not spelled
 		if ( this->sink->adj.at(i)->reverse->original == 1 ) {
-			checker = false;
 			return 0;
 		}
 
@@ -313,23 +292,14 @@ bool Graph::spell_word() {
 				for (vector<Node*>::size_type k = 0; k < this->nodes.size(); ++k) {
 
 					if ( (this->nodes.at(k)->type == DICE) && (this->nodes.at(k) == this->sink->adj.at(i)->to->adj.at(j)->to) ) {
-
 						spellingIds.push_back( k - 1 );
-
 					}
-
 				}
-
 			}
-
 		}
-
 	}
-
-
-	return checker;
 	
-
+	return 1;
 }
 
 /*BROKEN do not use.
