@@ -185,9 +185,15 @@ bool Graph::BFS() {
 	//Main Action Loop
 	while (!bfsq.empty()) {
 
+		if (bfsq.front()->type == SINK) {
+			found_sink = true;
+			break;
+		}
+
 		//Read in adjacencies into the queue
 		for (vector<Edge*>::size_type i = 0; i < bfsq.front()->adj.size(); ++i) {
 
+			/*
 			//Break the Loops if the SINK is found
 			if (bfsq.front()->adj.at(i)->to->type == SINK) {
 
@@ -199,7 +205,8 @@ bool Graph::BFS() {
 				swap(bfsq, clearer);
 
 				found_sink = true;
-			}
+			} 
+			*/
 
 
 			//Do not push into queue if Node has been visited or its Edge's Original Flow = 0
@@ -241,12 +248,13 @@ bool Graph::BFS() {
 
 			//Set the (Normal & Reverse) edge's O & R
 			//Set "Reverse"/Backedges
-			temp->backedge->original = 1;
-			temp->backedge->residual = 0;
+			temp->backedge->original = !temp->backedge->original;
+			temp->backedge->residual = !temp->backedge->residual;
 			//Set Standard Edge's
-			temp->backedge->reverse->original = 0;
-			temp->backedge->reverse->residual = 1;
+			temp->backedge->reverse->original = !temp->backedge->reverse->original;
+			temp->backedge->reverse->residual = !temp->backedge->reverse->residual;
 
+			/*
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
 			// cout << "Edge from " << temp->type << " to " << temp->backedge->to->type << " with O = " << temp->backedge->original  << endl;
 			printf("Temp == %p\n", temp);
@@ -254,11 +262,12 @@ bool Graph::BFS() {
 			printf("SINK->backedge->to == %p\n", this->sink->backedge->to);
 			printf("SINK->backedge->to->backedge->to == %p\n", this->sink->backedge->to->backedge->to);
 			// exit(1);
+			*/
 
 			//Trace back the backedge
 			temp = temp->backedge->to;
 
-		} printf("exit loop\n");
+		}
 
 
 		return true;
