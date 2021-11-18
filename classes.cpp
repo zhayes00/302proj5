@@ -175,11 +175,11 @@ bool Graph::BFS() {
 
 	//Clear Backedges & Visited on all Nodes
 	for (vector<Node*>::size_type i = 0; i < this->nodes.size(); ++i) {
-
 		this->nodes.at(i)->visited = 0;
 		this->nodes.at(i)->backedge = nullptr;
-
 	}
+	this->sink->visited = 0;
+	this->sink->backedge = nullptr;
 
 
 	//Main Action Loop
@@ -199,7 +199,6 @@ bool Graph::BFS() {
 				swap(bfsq, clearer);
 
 				found_sink = true;
-
 			}
 
 
@@ -210,12 +209,10 @@ bool Graph::BFS() {
 
 			if ( (bfsq.front()->adj.at(i)->to->visited == 0) && (bfsq.front()->adj.at(i)->original == 1) ) {
 
-
 				//Push the adjacent node into the queue
 				bfsq.push( bfsq.front()->adj.at(i)->to );
 				//set the adjacent node's backedge
 				bfsq.back()->backedge = bfsq.front()->adj.at(i)->reverse;
-
 			}
 		}
 
@@ -224,9 +221,7 @@ bool Graph::BFS() {
 			bfsq.front()->visited = 1;
 			bfsq.pop();
 		}
-
 	}
-
 
 	//BFS Path Checking
 	if (found_sink == false) {
@@ -245,7 +240,7 @@ bool Graph::BFS() {
 		while (temp->type != SOURCE) {
 
 			//Set the (Normal & Reverse) edge's O & R
-			//Set "Reverse"/Backedge's
+			//Set "Reverse"/Backedges
 			temp->backedge->original = 1;
 			temp->backedge->residual = 0;
 			//Set Standard Edge's
@@ -253,12 +248,17 @@ bool Graph::BFS() {
 			temp->backedge->reverse->residual = 1;
 
 			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~TESTER
-			cout << "Edge from " << temp->type << " to " << temp->backedge->to->type << " with O = " << temp->backedge->original  << endl;
+			// cout << "Edge from " << temp->type << " to " << temp->backedge->to->type << " with O = " << temp->backedge->original  << endl;
+			printf("Temp == %p\n", temp);
+			printf("SINK == %p\n", this->sink);
+			printf("SINK->backedge->to == %p\n", this->sink->backedge->to);
+			printf("SINK->backedge->to->backedge->to == %p\n", this->sink->backedge->to->backedge->to);
+			// exit(1);
 
 			//Trace back the backedge
 			temp = temp->backedge->to;
 
-		}
+		} printf("exit loop\n");
 
 
 		return true;
@@ -291,6 +291,7 @@ bool Graph::spell_word() {
 		//if the original is 1, then is was never "traveled" and therefore, the word was not spelled
 		if ( this->sink->adj.at(i)->reverse->original == 1 ) {
 			checker = false;
+			return 0;
 		}
 
 		//Checking to see what die were used for each letter

@@ -4,7 +4,6 @@
 #include <vector>
 #include <string>
 #include "classes.hpp"
-// #pragma once
 
 using namespace std;
 
@@ -62,16 +61,6 @@ int main(int argc, char **argv) {
 		}
 		
 		
-
-	//add classes from piazza?
-	//use edmonds-karp
-	//find max flow will solve
-	
-	//pieces:							|	"anticipated weight"
-	//	class & member function setup	|	medium?
-	//	edmonds-karp & BFS				|	heavy
-	//	input/output					|	light
-	//	
 
 	return 0;
 }
